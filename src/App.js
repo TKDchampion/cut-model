@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { lazy, Suspense } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import ModelHeader from "./components/model-header";
+
+const Square = lazy(() => import("./components/square"));
+const Shape = lazy(() => import("./components/shape"));
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ModelHeader />
+      <Suspense fallback={<div>loading</div>}>
+        <Routes>
+          <Route path="/square" element={<Square />}></Route>
+          <Route path="/shape" element={<Shape />}></Route>
+          <Route path="/" element={<Navigate to="square" />} />
+          <Route
+            path="*"
+            element={<div className="not-found">not found</div>}
+          />
+        </Routes>
+      </Suspense>
     </div>
   );
 }
